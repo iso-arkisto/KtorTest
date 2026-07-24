@@ -1,6 +1,7 @@
 package com.yourname.ktortest.data.local
 
 import androidx.room.Database
+import com.yourname.ktortest.data.dao.LanguageDao
 
 @Database(
     version = 1,
