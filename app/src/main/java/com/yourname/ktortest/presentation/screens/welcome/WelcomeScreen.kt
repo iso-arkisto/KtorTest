@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.yourname.ktortest.domain.model.OnboardingPage
 import com.yourname.ktortest.navigation.Screen
@@ -23,7 +24,10 @@ import com.yourname.ktortest.ui.theme.welcomeScreenBackgroundColor
 import com.yourname.ktortest.utils.Constants.ONBOARDING_PAGE_COUNT
 
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(
+    navController: NavHostController,
+    viewModel: WelcomeViewModel = hiltViewModel()
+) {
     val pages = listOf<OnboardingPage>(
         OnboardingPage.First,
         OnboardingPage.Second,
@@ -61,9 +65,10 @@ fun WelcomeScreen(navController: NavHostController) {
             modifier = Modifier.weight(1f),
             state = pageState,
             onClick = {
+                viewModel.saveOnboardingState(true)
                 navController.popBackStack()
                 navController.navigate(Screen.Home.route)
-            } // implement onboarding state saving in WelcomeViewModel
+            }
         )
     }
 }
