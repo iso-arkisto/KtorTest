@@ -16,7 +16,7 @@ interface LanguageDao {
     fun getLanguageById(id: Int): LanguageEntity
 
     @Insert(onConflict = OnConflictStrategy.Companion.REPLACE)
-    suspend fun addLanguage(item: LanguageEntity)
+    suspend fun addLanguages(items: List<LanguageEntity>)
 
     @Query("DELETE FROM languages")
     suspend fun deleteAllLanguages()
