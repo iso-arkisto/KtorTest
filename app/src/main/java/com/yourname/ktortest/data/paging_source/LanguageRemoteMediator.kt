@@ -6,9 +6,9 @@ import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.yourname.ktortest.data.local.LanguageDatabase
+import com.yourname.ktortest.data.local.LanguageEntity
 import com.yourname.ktortest.data.remote.KtorApi
 import com.yourname.ktortest.domain.model.LanguageRemoteKey
-import com.yourname.ktortest.domain.model.ProgrammingLanguage
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -16,12 +16,12 @@ import javax.inject.Inject
 class LanguageRemoteMediator @Inject constructor(
     val ktorApi: KtorApi,
     val database: LanguageDatabase
-): RemoteMediator<Int, ProgrammingLanguage>() {
+): RemoteMediator<Int, LanguageEntity>() {
     private val languageDao = database.languageDao()
     private val languageRemoteKeyDao = database.languageRemoteKeyDao()
 
     private suspend fun getRemoteKeyClosestToCurrentPosition(
-        state: PagingState<Int, ProgrammingLanguage>
+        state: PagingState<Int, LanguageEntity>
     ): LanguageRemoteKey? {
         return state.anchorPosition?.let { position ->
             state.closestItemToPosition(position)?.id?.let { id ->
@@ -31,7 +31,7 @@ class LanguageRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyForFirstItem(
-        state: PagingState<Int, ProgrammingLanguage>
+        state: PagingState<Int, LanguageEntity>
     ): LanguageRemoteKey? {
         return state.pages.firstOrNull { page ->
             page.data.isNotEmpty()
@@ -41,7 +41,7 @@ class LanguageRemoteMediator @Inject constructor(
     }
 
     private suspend fun getRemoteKeyForLastItem(
-        state: PagingState<Int, ProgrammingLanguage>
+        state: PagingState<Int, LanguageEntity>
     ): LanguageRemoteKey? {
         return state.pages.lastOrNull() { page ->
             page.data.isNotEmpty()
@@ -52,7 +52,7 @@ class LanguageRemoteMediator @Inject constructor(
 
     override suspend fun load(
         loadType: LoadType,
-        state: PagingState<Int, ProgrammingLanguage>
+        state: PagingState<Int, LanguageEntity>
     ): MediatorResult {
         return try {
             val page = when(loadType) {
@@ -94,7 +94,9 @@ class LanguageRemoteMediator @Inject constructor(
                     }
 
                     languageRemoteKeyDao.addAllRemoteKeys(keys)
-                    languageDao.addLanguages(response.languages)
+                    languageDao.addLanguages(response.languages.map { language ->
+                        language.toEntity()
+                    })
 
                 } // either all operations are executed, or none are
             }
