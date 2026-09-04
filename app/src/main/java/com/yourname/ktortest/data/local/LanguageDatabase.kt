@@ -14,6 +14,6 @@ import com.yourname.ktortest.domain.model.LanguageRemoteKey
 )
 @TypeConverters(DatabaseConverter::class)
 abstract class LanguageDatabase : RoomDatabase() {
-    abstract fun LanguageDao(): LanguageDao
-    abstract fun LanguageRemoteKeyDao(): LanguageRemoteKeyDao
+    abstract fun languageDao(): LanguageDao
+    abstract fun languageRemoteKeyDao(): LanguageRemoteKeyDao
 }
