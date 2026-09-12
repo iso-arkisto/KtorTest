@@ -50,3 +50,24 @@ fun inactiveIndicatorColor(): Color {
 fun buttonBackgroundColor(): Color {
     return if(isSystemInDarkTheme()) Purple40 else Purple80
 }
+
+
+@Composable
+fun topAppBarBackgroundColor(): Color {
+    return if(isSystemInDarkTheme()) Color.Black else Purple40
+}
+
+@Composable
+fun topAppBarContentColor(): Color {
+    return if(isSystemInDarkTheme()) Color.LightGray else Color.White
+}
+
+@Composable
+fun shimmerItemColor(): Color {
+    return if(isSystemInDarkTheme()) Color.Black else ShimmerLightGrey
+}
+
+@Composable
+fun shimmerComponentItemColor(): Color {
+    return if(isSystemInDarkTheme()) ShimmerDarkGrey else ShimmerMediumGrey
+}
