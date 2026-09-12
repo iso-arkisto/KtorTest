@@ -1,5 +1,6 @@
 package com.yourname.ktortest.di
 
+import android.content.Context
 import com.yourname.ktortest.data.local.LanguageDatabase
 import com.yourname.ktortest.data.remote.KtorApi
 import com.yourname.ktortest.data.repository.DatastoreOperationsImpl
@@ -11,19 +12,23 @@ import com.yourname.ktortest.domain.usecase.UseCases
 import com.yourname.ktortest.domain.usecase.get_all_languages.GetAllLanguagesUseCase
 import com.yourname.ktortest.domain.usecase.read_onboarding.ReadOnboardingUseCase
 import com.yourname.ktortest.domain.usecase.save_onboarding.SaveOnboardingUseCase
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
-    @Binds
+object RepositoryModule {
+    @Provides
     @Singleton
-    abstract fun bindDatastoreOperations(datastoreOperationsImpl: DatastoreOperationsImpl): DatastoreOperations
+    fun provideDatastoreOperations(
+        @ApplicationContext context: Context
+    ): DatastoreOperations {
+        return DatastoreOperationsImpl(context)
+    }
 
     @Provides
     @Singleton
