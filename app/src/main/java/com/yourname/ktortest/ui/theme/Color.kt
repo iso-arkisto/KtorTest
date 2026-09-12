@@ -15,6 +15,12 @@ val Pink40 = Color(0xFF7D5260)
 val LightGray = Color(0xFFD8D8D8)
 val DarkGray = Color(0xFF2A2A2A)
 
+val StarColor = Color(0xFFFFC94D)
+
+val ShimmerLightGrey = Color(0xFFF1F1F1)
+val ShimmerMediumGrey = Color(0xFFE3E3E3)
+val ShimmerDarkGrey = Color(0xFF1D1D1D)
+
 @Composable
 fun welcomeScreenBackgroundColor(): Color {
     return if(isSystemInDarkTheme()) Color.Black else Color.White
