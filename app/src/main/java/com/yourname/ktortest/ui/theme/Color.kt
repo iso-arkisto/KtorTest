@@ -71,3 +71,8 @@ fun shimmerItemColor(): Color {
 fun shimmerComponentItemColor(): Color {
     return if(isSystemInDarkTheme()) ShimmerDarkGrey else ShimmerMediumGrey
 }
+
+@Composable
+fun itemContentColor(): Color {
+    return if(isSystemInDarkTheme()) LightGray else Color.White
+}
