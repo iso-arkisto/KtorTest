@@ -7,6 +7,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.yourname.ktortest.data.local.LanguageDatabase
 import com.yourname.ktortest.data.local.LanguageEntity
+import com.yourname.ktortest.data.mappers.toEntity
 import com.yourname.ktortest.data.remote.KtorApi
 import com.yourname.ktortest.domain.model.LanguageRemoteKey
 import java.lang.Exception

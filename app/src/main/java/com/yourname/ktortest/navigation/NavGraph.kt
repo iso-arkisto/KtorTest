@@ -1,12 +1,12 @@
 package com.yourname.ktortest.navigation
 
 import androidx.compose.runtime.Composable
-import androidx.navigation.NavGraph
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.yourname.ktortest.presentation.screens.home.HomeScreen
 import com.yourname.ktortest.presentation.screens.splash.SplashScreen
 import com.yourname.ktortest.presentation.screens.welcome.WelcomeScreen
 import com.yourname.ktortest.utils.Constants
@@ -26,7 +26,7 @@ fun NavGraph(
             WelcomeScreen(navHostController)
         }
         composable(Screen.Home.route) {
-
+            HomeScreen(navController = navHostController)
         }
         composable(
             Screen.Details.route,

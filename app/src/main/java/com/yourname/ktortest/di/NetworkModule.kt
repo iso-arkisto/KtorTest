@@ -1,6 +1,7 @@
 package com.yourname.ktortest.di
 
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import com.yourname.ktortest.data.remote.KtorApi
 import com.yourname.ktortest.utils.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -37,5 +38,13 @@ object NetworkModule {
             .client(okHttpClient)
             .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
+    }
+
+    @Provides
+    @Singleton
+    fun provideKtorApi(
+        retrofit: Retrofit
+    ): KtorApi {
+        return retrofit.create(KtorApi::class.java)
     }
 }
