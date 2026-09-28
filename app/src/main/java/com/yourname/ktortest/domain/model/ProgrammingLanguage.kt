@@ -12,5 +12,7 @@ data class ProgrammingLanguage(
     val image: String,
     val creator: String,
     val inceptionYear: Int,
-    val name: String
+    val name: String,
+    val rating: Double,
+    val description: String
 )
