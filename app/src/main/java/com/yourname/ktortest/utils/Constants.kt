@@ -9,4 +9,5 @@ object Constants {
     const val SPLASH_DELAY = 2000L
     const val BASE_URL = "http://10.0.2.2:8080/"
     const val ITEMS_PER_PAGE = 3
+    const val MAX_STARS = 5
 }
