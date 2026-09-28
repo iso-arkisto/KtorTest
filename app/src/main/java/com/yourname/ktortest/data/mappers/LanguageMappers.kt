@@ -10,7 +10,9 @@ fun ProgrammingLanguage.toEntity(): LanguageEntity {
         shortName = shortName,
         creator = creator,
         inceptionYear = inceptionYear,
-        name = name
+        name = name,
+        description = description,
+        rating = rating
     )
 }
 
@@ -21,6 +23,8 @@ fun LanguageEntity.toDomain(): ProgrammingLanguage {
         shortName = shortName,
         creator = creator,
         inceptionYear = inceptionYear,
-        name = name
+        name = name,
+        description = description,
+        rating = rating
     )
 }
