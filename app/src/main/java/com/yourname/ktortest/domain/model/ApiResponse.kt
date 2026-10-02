@@ -8,5 +8,6 @@ data class ApiResponse(
     val message: String? = null,
     val prevPage: Int? = null,
     val nextPage: Int? = null,
-    val languages: List<ProgrammingLanguage> = emptyList()
+    val languages: List<ProgrammingLanguage> = emptyList(),
+    val lastUpdated: Long? = null
 )

@@ -1,5 +1,6 @@
 package com.yourname.ktortest.data.paging_source
 
+import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -90,7 +91,8 @@ class LanguageRemoteMediator @Inject constructor(
                         LanguageRemoteKey(
                             id = language.id,
                             prevPage = prevPage,
-                            nextPage = nextPage
+                            nextPage = nextPage,
+                            lastUpdated = response.lastUpdated
                         )
                     }
 
@@ -105,6 +107,24 @@ class LanguageRemoteMediator @Inject constructor(
             MediatorResult.Success(response.nextPage == null)
         } catch (e: Exception) {
             return MediatorResult.Error(e)
+        }
+    }
+
+    override suspend fun initialize(): InitializeAction {
+        val currentTime = System.currentTimeMillis()
+        val lastUpdated = languageRemoteKeyDao.getRemoteKeys(1)?.lastUpdated ?: 0L
+        val cacheTimeout = 1440
+        val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
+
+        Log.d("remote_mediator", "Current time: $currentTime")
+        Log.d("remote_mediator", "Last updated time: $lastUpdated")
+
+        return if(diffInMinutes.toInt() <= cacheTimeout) {
+            Log.d("remote_mediator", "Skipped initial refresh")
+            InitializeAction.SKIP_INITIAL_REFRESH
+        } else {
+            Log.d("remote_mediator", "Launched initial refresh")
+            InitializeAction.LAUNCH_INITIAL_REFRESH
         }
     }
 }
