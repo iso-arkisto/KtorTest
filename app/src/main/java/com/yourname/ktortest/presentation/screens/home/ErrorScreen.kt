@@ -36,10 +36,11 @@ import com.yourname.ktortest.ui.theme.DarkGray
 import com.yourname.ktortest.ui.theme.LightGray
 import com.yourname.ktortest.ui.theme.SMALL_PADDING
 import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 @Composable
 fun ErrorScreen(error: LoadState.Error) {
-    val message by remember { mutableStateOf(parseErrorMessage(error.toString())) }
+    val message by remember { mutableStateOf(parseErrorMessage(error)) }
     val icon by remember { mutableIntStateOf(R.drawable.ic_network_error) }
     var startAnimation by remember { mutableStateOf(false) }
 
@@ -113,10 +114,10 @@ fun isDarkTheme(): Boolean {
     return (LocalConfiguration.current.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
 
-private fun parseErrorMessage(message: String): String {
-    return when {
-        message.contains("SocketTimeoutException") -> { "Server is unavailable" }
-        message.contains("ConnectException") -> { "No internet connection" }
+private fun parseErrorMessage(error: LoadState.Error): String {
+    return when(error.error) {
+        is SocketTimeoutException -> { "Server is unavailable" }
+        is ConnectException -> { "No internet connection" }
         else -> { "Unknown error" }
     }
 }
