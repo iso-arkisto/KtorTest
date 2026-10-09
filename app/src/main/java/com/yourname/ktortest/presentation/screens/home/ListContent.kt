@@ -18,6 +18,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -30,6 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.wear.compose.material.ContentAlpha
 import coil.compose.rememberAsyncImagePainter
@@ -38,34 +45,88 @@ import com.yourname.ktortest.R
 import com.yourname.ktortest.domain.model.ProgrammingLanguage
 import com.yourname.ktortest.navigation.Screen
 import com.yourname.ktortest.presentation.components.RatingWidget
+import com.yourname.ktortest.presentation.components.ShimmerEffect
 import com.yourname.ktortest.ui.theme.LARGE_PADDING
 import com.yourname.ktortest.ui.theme.MEDIUM_PADDING
 import com.yourname.ktortest.ui.theme.SMALL_PADDING
 import com.yourname.ktortest.ui.theme.itemContentColor
 import com.yourname.ktortest.utils.Constants.BASE_URL
+import kotlinx.coroutines.delay
 
 @Composable
 fun ListContent(
     navController: NavHostController,
     languages: LazyPagingItems<ProgrammingLanguage>
 ) {
-    LazyColumn(
-        contentPadding = PaddingValues(SMALL_PADDING),
-        verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
-    ) {
-        items(languages.itemCount, key = { index ->
-            languages[index]?.id ?: index
-        }) { index ->
+    val result = handlePagingResult(languages)
 
-            val language = languages[index]
+    if(result) {
+        LazyColumn(
+            contentPadding = PaddingValues(SMALL_PADDING),
+            verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
+        ) {
+            items(languages.itemCount, key = { index ->
+                languages[index]?.id ?: index
+            }) { index ->
 
-            language?.let { item ->
-                LanguageItem(
-                    item = item,
-                    navController = navController
-                )
+                val language = languages[index]
+
+                language?.let { item ->
+                    LanguageItem(
+                        item = item,
+                        navController = navController
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+fun handlePagingResult(
+    languages: LazyPagingItems<ProgrammingLanguage>
+): Boolean {
+    var minShimmerElapsed by remember { mutableStateOf(true) }
+
+    LaunchedEffect(languages) {
+        snapshotFlow { // turns compose state into flow
+            languages.loadState.refresh
+        }.collect { state ->
+            if(state is LoadState.Loading) {
+                minShimmerElapsed = false
+                delay(10_000L)
+                minShimmerElapsed = true
+            }
+        }
+    }
+
+    val isLoading = languages.loadState.refresh is LoadState.Loading
+    val error = when {
+        languages.loadState.refresh is LoadState.Error -> {
+            languages.loadState.refresh as LoadState.Error
+        }
+        languages.loadState.append is LoadState.Error -> {
+            languages.loadState.append as LoadState.Error
+        }
+        languages.loadState.prepend is LoadState.Error -> {
+            languages.loadState.prepend as LoadState.Error
+        }
+        else -> null
+    }
+
+    val showShimmer = (isLoading || error!=null) && !minShimmerElapsed
+
+    return when {
+        showShimmer -> {
+            ShimmerEffect()
+            false
+        }
+        isLoading && minShimmerElapsed -> false
+        error != null -> {
+            ErrorScreen(error)
+            false
+        }
+        else -> true
     }
 }
 
