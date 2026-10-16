@@ -7,7 +7,9 @@ import androidx.paging.PagingData
 import androidx.paging.map
 import com.yourname.ktortest.data.local.LanguageDatabase
 import com.yourname.ktortest.data.mappers.toDomain
+import com.yourname.ktortest.data.mappers.toEntity
 import com.yourname.ktortest.data.paging_source.LanguageRemoteMediator
+import com.yourname.ktortest.data.paging_source.SearchLanguageSource
 import com.yourname.ktortest.data.remote.KtorApi
 import com.yourname.ktortest.domain.model.ProgrammingLanguage
 import com.yourname.ktortest.domain.repository.RemoteDataSource
@@ -40,7 +42,18 @@ class RemoteDataSourceImpl @Inject constructor(
         }
     }
 
-    override fun searchLanguages(): Flow<PagingData<ProgrammingLanguage>> {
-        TODO("Not yet implemented")
+    override fun searchLanguages(
+        query: String
+    ): Flow<PagingData<ProgrammingLanguage>> {
+        return Pager(
+            config = PagingConfig(pageSize = Constants.ITEMS_PER_PAGE),
+            pagingSourceFactory = {
+                SearchLanguageSource(
+                    ktorApi = ktorApi,
+                    query = query,
+                    cacheLanguages = { languageDao.addLanguages(it.map { item -> item.toEntity() }) }
+                )
+            }
+        ).flow
     }
 }
