@@ -22,4 +22,8 @@ class Repository @Inject constructor(
     fun getAllLanguages(): Flow<PagingData<ProgrammingLanguage>> {
         return remoteDataSource.getAllLanguages()
     }
+
+    fun searchLanguages(query: String): Flow<PagingData<ProgrammingLanguage>> {
+        return remoteDataSource.searchLanguages(query)
+    }
 }
