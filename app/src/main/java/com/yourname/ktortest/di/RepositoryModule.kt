@@ -12,6 +12,7 @@ import com.yourname.ktortest.domain.usecase.UseCases
 import com.yourname.ktortest.domain.usecase.get_all_languages.GetAllLanguagesUseCase
 import com.yourname.ktortest.domain.usecase.read_onboarding.ReadOnboardingUseCase
 import com.yourname.ktortest.domain.usecase.save_onboarding.SaveOnboardingUseCase
+import com.yourname.ktortest.domain.usecase.search_languages.SearchLanguagesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,7 +48,8 @@ object RepositoryModule {
         return UseCases(
             readOnboardingUseCase = ReadOnboardingUseCase(repository),
             saveOnboardingUseCase = SaveOnboardingUseCase(repository),
-            getAllLanguagesUseCase = GetAllLanguagesUseCase(repository)
+            getAllLanguagesUseCase = GetAllLanguagesUseCase(repository),
+            searchLanguagesUseCase = SearchLanguagesUseCase(repository)
         )
     }
 }
