@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface RemoteDataSource {
     fun getAllLanguages(): Flow<PagingData<ProgrammingLanguage>>
-    fun searchLanguages(): Flow<PagingData<ProgrammingLanguage>>
+    fun searchLanguages(query: String): Flow<PagingData<ProgrammingLanguage>>
 }

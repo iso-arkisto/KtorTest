@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.yourname.ktortest.presentation.screens.home.HomeScreen
+import com.yourname.ktortest.presentation.screens.search.SearchScreen
 import com.yourname.ktortest.presentation.screens.splash.SplashScreen
 import com.yourname.ktortest.presentation.screens.welcome.WelcomeScreen
 import com.yourname.ktortest.utils.Constants
@@ -37,7 +38,7 @@ fun NavGraph(
 
         }
         composable(Screen.Search.route) {
-
+            SearchScreen(navHostController = navHostController)
         }
     }
 }
