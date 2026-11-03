@@ -1,6 +1,7 @@
 package com.yourname.ktortest.data.repository
 
 import androidx.paging.PagingData
+import com.yourname.ktortest.domain.model.CreateLanguageRequest
 import com.yourname.ktortest.domain.model.ProgrammingLanguage
 import com.yourname.ktortest.domain.repository.DatastoreOperations
 import com.yourname.ktortest.domain.repository.RemoteDataSource
@@ -25,5 +26,13 @@ class Repository @Inject constructor(
 
     fun searchLanguages(query: String): Flow<PagingData<ProgrammingLanguage>> {
         return remoteDataSource.searchLanguages(query)
+    }
+
+    suspend fun createLanguage(
+        request: CreateLanguageRequest,
+        imageBytes: ByteArray,
+        fileExtension: String
+    ): ProgrammingLanguage {
+        return remoteDataSource.createLanguage(request, imageBytes, fileExtension)
     }
 }
