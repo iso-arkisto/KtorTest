@@ -9,6 +9,7 @@ import com.yourname.ktortest.data.repository.Repository
 import com.yourname.ktortest.domain.repository.DatastoreOperations
 import com.yourname.ktortest.domain.repository.RemoteDataSource
 import com.yourname.ktortest.domain.usecase.UseCases
+import com.yourname.ktortest.domain.usecase.create_language.CreateLanguageUseCase
 import com.yourname.ktortest.domain.usecase.get_all_languages.GetAllLanguagesUseCase
 import com.yourname.ktortest.domain.usecase.read_onboarding.ReadOnboardingUseCase
 import com.yourname.ktortest.domain.usecase.save_onboarding.SaveOnboardingUseCase
@@ -49,7 +50,8 @@ object RepositoryModule {
             readOnboardingUseCase = ReadOnboardingUseCase(repository),
             saveOnboardingUseCase = SaveOnboardingUseCase(repository),
             getAllLanguagesUseCase = GetAllLanguagesUseCase(repository),
-            searchLanguagesUseCase = SearchLanguagesUseCase(repository)
+            searchLanguagesUseCase = SearchLanguagesUseCase(repository),
+            createLanguageUseCase = CreateLanguageUseCase(repository)
         )
     }
 }
